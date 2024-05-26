@@ -29,7 +29,7 @@ bool dmxStarted = false;
 int sendPin = 2;		//dafault on ESP8266
 
 //DMX value array and size. Entry 0 will hold startbyte
-uint8_t dmxData[dmxMaxChannel] = {};
+uint8_t dmxData[dmxMaxChannel+1] = {};
 int chanSize;
 
 
@@ -80,7 +80,7 @@ void DMXESPSerial::end() {
   delete dmxData;
   chanSize = 0;
   Serial1.end();
-  dmxStarted == false;
+  dmxStarted = false;
 }
 
 void DMXESPSerial::update() {
@@ -97,7 +97,7 @@ void DMXESPSerial::update() {
   //send data
   Serial1.begin(DMXSPEED, DMXFORMAT);
   digitalWrite(sendPin, LOW);
-  Serial1.write(dmxData, chanSize);
+  Serial1.write(dmxData, chanSize+1);
   Serial1.flush();
   delay(1);
   Serial1.end();
